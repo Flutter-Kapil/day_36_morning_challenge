@@ -102,7 +102,7 @@ List<List> merge(List<List> listOfDuplicateAccounts) {
       break;
     }
     for (int i = 0; i < listOfAccounts.length; i++) {
-      Account singleAccount = listOfAccounts[0];
+      Account singleAccount = listOfAccounts[i];
       for (int j = 1; j < listOfAccounts.length; j++) {
         if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
           singleAccount = singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
