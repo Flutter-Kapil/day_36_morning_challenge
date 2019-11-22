@@ -69,6 +69,9 @@ main() {
     ["Mary", "mary@mail.com"]
   ];
   print(merge(duplicateAccountsList));
+  // List<Account> objectsList =ListtoAccounts(duplicateAccountsList);
+  // List<List> revertBackToList = AccountsToList(objectsList);
+  // print(revertBackToList);
 // List<Account> accountsList =[];
 // duplicateAccountsList.forEach((account)=>accountsList.add(Account(name: account[0],emailsList: account.sublist(1))));
 // print(accountsList);
@@ -108,6 +111,7 @@ List<List> merge(List<List> listOfDuplicateAccounts) {
           singleAccount = singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
           listOfAccounts.removeAt(j);
         } else {
+          //fix this
           duplicatesFound = false;
         }
       }
@@ -121,14 +125,29 @@ List<List> merge(List<List> listOfDuplicateAccounts) {
 ListtoAccounts(List<List> listOfAccounts) {
   List<Account> accountsList = [];
   listOfAccounts.forEach((account) => accountsList
-      .add(Account(name: account[0], emailsList: account.sublist(1))));
+      .add(Account(name: account[0], emailsList: account.sublist(1).toList())));
   return accountsList;
 }
 
 // turn list of Account Objects into list of list of accounts
 AccountsToList(List<Account> accountsList) {
-  List<List> listOfAccounts;
-  accountsList.forEach((accountObject) =>
-      listOfAccounts.add([accountObject.name, accountObject.emailsList]));
+  List<List> listOfAccounts=[];
+  accountsList.forEach((accountObject) {
+    List temp = [];
+    temp.add(accountObject.name);
+    temp.addAll(accountObject.emailsList);
+    listOfAccounts.add(temp);
+  });
   return listOfAccounts;
 }
+
+
+
+
+
+  // accountsList.forEach((accountObject) {
+  //   List temp = [];
+  //   temp.add(accountObject.name);
+  //   temp.addAll(accountObject.emailsList);
+  //   listOfAccounts.addAll(temp);
+  // });
