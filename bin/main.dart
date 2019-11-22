@@ -20,62 +20,7 @@
 // ["Mary", "mary@mail.com"]]
 /// Output: [["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],
 /// ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
-
-
-
-// List<List> merge(List<List> accountsList) {
-//   List<List> output = [];
-//   List<dynamic> processesNames = [];
-//   for (int i = 0; i < accountsList.length; i++) {
-//     List<dynamic> temp = [];
-//     dynamic account = accountsList[i];
-//     // if(accountsList.sublist(i+1).contains(account[0]));
-//     temp.add(account);
-//     if (processesNames.contains(account[0])) {
-//       continue;
-//     }
-//     temp.addAll(accountsList
-//         .sublist(i + 1)
-//         .where((item) => item[0] == account[0])
-//         .toList());
-//     // print(megreSublists(temp));
-//     temp = temp.toSet().toList();
-//     temp = megreSublists(temp);
-//     output.add(temp);
-//     processesNames.add(account[0]);
-//     // print(temp);
-//     // break;
-//   }
-
-//   return output;
-// }
-
-// List megreSublists(List<dynamic> list) {
-//   List temp = [];
-//   for (List sameAccount in list) {
-//     temp.addAll(sameAccount.sublist(1));
-//     temp.sort();
-//     temp.insert(0, list[0][0]);
-//   }
-//   return temp.toSet().toList();
-// }
-
-//-------------
-main() {
-  List<List> duplicateAccountsList = [
-    ["John", "johnsmith@mail.com", "john00@mail.com"],
-    ["John", "johnnybravo@mail.com"],
-    ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
-    ["Mary", "mary@mail.com"]
-  ];
-  print(merge(duplicateAccountsList));
-  // List<Account> objectsList =ListtoAccounts(duplicateAccountsList);
-  // List<List> revertBackToList = AccountsToList(objectsList);
-  // print(revertBackToList);
-// List<Account> accountsList =[];
-// duplicateAccountsList.forEach((account)=>accountsList.add(Account(name: account[0],emailsList: account.sublist(1))));
-// print(accountsList);
-}
+/// 
 
 class Account {
   String name;
@@ -93,18 +38,12 @@ class Account {
   }
 }
 
-List<List> merge(List<List> listOfDuplicateAccounts) {
-  bool duplicatesFound = true;
 
+List<List> merge(List<List> listOfDuplicateAccounts) {
   //convert given list into list of objects
    List<Account> listOfAccounts = [];
     listOfAccounts = ListtoAccounts(listOfDuplicateAccounts);
-
-  while (duplicatesFound) { 
-    if(listOfAccounts.length==1){
-      break;
-    }
-    for (int i = 0; i < listOfAccounts.length; i++) {//need to fix this as well
+    for (int i = 0; i < listOfAccounts.length; i++) {
       Account singleAccount = listOfAccounts[0];
       for (int j = i+1; j < listOfAccounts.length; j++) {
         if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
@@ -112,10 +51,7 @@ List<List> merge(List<List> listOfDuplicateAccounts) {
           listOfAccounts.removeAt(j);
         } 
       }
-      duplicatesFound = false;
     }
-  }
-
   return AccountsToList(listOfAccounts);
 }
 
@@ -140,13 +76,15 @@ AccountsToList(List<Account> accountsList) {
   return listOfAccounts;
 }
 
+//-------------
+main() {
+  List<List> duplicateAccountsList = [
+    ["John", "johnsmith@mail.com", "john00@mail.com"],
+    ["John", "johnnybravo@mail.com"],
+    ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+    ["Mary", "mary@mail.com"]
+  ];
+  print(merge(duplicateAccountsList));
 
+}
 
-
-
-  // accountsList.forEach((accountObject) {
-  //   List temp = [];
-  //   temp.add(accountObject.name);
-  //   temp.addAll(accountObject.emailsList);
-  //   listOfAccounts.addAll(temp);
-  // });
