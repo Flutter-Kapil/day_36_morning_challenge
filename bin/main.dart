@@ -20,7 +20,7 @@
 // ["Mary", "mary@mail.com"]]
 /// Output: [["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],
 /// ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
-/// 
+///
 
 class Account {
   String name;
@@ -38,20 +38,22 @@ class Account {
   }
 }
 
-
 List<List> merge(List<List> listOfDuplicateAccounts) {
   //convert given list into list of objects
-   List<Account> listOfAccounts = [];
-    listOfAccounts = ListtoAccounts(listOfDuplicateAccounts);
-    for (int i = 0; i < listOfAccounts.length; i++) {
-      Account singleAccount = listOfAccounts[0];
-      for (int j = i+1; j < listOfAccounts.length; j++) {
-        if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
-          singleAccount = singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
-          listOfAccounts.removeAt(j);
-        } 
+  List<Account> listOfAccounts = [];
+  listOfAccounts = ListtoAccounts(listOfDuplicateAccounts);
+  for (int i = 0; i < listOfAccounts.length; i++) {
+    Account singleAccount = listOfAccounts[i];
+    for (int j = i + 1; j < listOfAccounts.length; j++) {
+      if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
+        singleAccount =
+            singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
+        listOfAccounts.removeAt(j);
+        // print('j:$j j--:${j-1}');
+        j--;
       }
     }
+  }
   return AccountsToList(listOfAccounts);
 }
 
@@ -65,7 +67,7 @@ ListtoAccounts(List<List> listOfAccounts) {
 
 // turn list of Account Objects into list of list of accounts
 AccountsToList(List<Account> accountsList) {
-  List<List> listOfAccounts=[];
+  List<List> listOfAccounts = [];
   accountsList.forEach((accountObject) {
     List temp = [];
     temp.add(accountObject.name);
@@ -82,9 +84,9 @@ main() {
     ["John", "johnsmith@mail.com", "john00@mail.com"],
     ["John", "johnnybravo@mail.com"],
     ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+    ["John", "johnnybravo@mail.com"],
+    ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
     ["Mary", "mary@mail.com"]
   ];
   print(merge(duplicateAccountsList));
-
 }
-
