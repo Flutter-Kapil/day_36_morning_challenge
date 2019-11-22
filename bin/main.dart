@@ -57,7 +57,18 @@ List megreSublists(List<dynamic> list){
 
 //-------------
 main() {
-  merge([["John", "johnsmith@mail.com", "john00@mail.com"],
+  List<List> duplicateAccountsList = [["John", "johnsmith@mail.com", "john00@mail.com"],
 ["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
-["Mary", "mary@mail.com"]]);
+["Mary", "mary@mail.com"]];
+  // merge(duplicateAccountsList);
+List<Account> accountsList =[];
+duplicateAccountsList.forEach((account)=>accountsList.add(Account(name: account[0],emailsList: account.sublist(1))));
+print(accountsList);
+}
+
+
+class Account {
+  String name;
+  List emailsList;
+  Account({this.name,this.emailsList});
 }
