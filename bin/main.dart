@@ -20,55 +20,115 @@
 // ["Mary", "mary@mail.com"]]
 /// Output: [["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],
 /// ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
-List<List> merge(List<List> accountsList){
-  List<List> output=[];
-  List processesNames =[];
-  for(int i=0;i<accountsList.length;i++){
-    List<dynamic> temp=[];
-    dynamic account = accountsList[i];
-    // if(accountsList.sublist(i+1).contains(account[0]));
-    temp.add(account);
-    if(processesNames.contains(account[0])){
-      continue;
-    }
-    temp.addAll(accountsList.sublist(i+1).where((item)=>item[0]==account[0]).toList());
-    // print(megreSublists(temp));
-    temp = temp.toSet().toList();
-    temp = megreSublists(temp);
-    output.add(temp);
-    processesNames.add(account[0]);
-    // print(temp);
-    // break;
-  }
-  
-  return output;
-}
 
-List megreSublists(List<dynamic> list){
-  List temp=[];
-  for(List sameAccount in list){
-  temp.addAll(sameAccount.sublist(1));
-  temp.sort();
-  temp.insert(0, list[0][0]);
-  }
-  return temp.toSet().toList();
-}
 
+
+// List<List> merge(List<List> accountsList) {
+//   List<List> output = [];
+//   List<dynamic> processesNames = [];
+//   for (int i = 0; i < accountsList.length; i++) {
+//     List<dynamic> temp = [];
+//     dynamic account = accountsList[i];
+//     // if(accountsList.sublist(i+1).contains(account[0]));
+//     temp.add(account);
+//     if (processesNames.contains(account[0])) {
+//       continue;
+//     }
+//     temp.addAll(accountsList
+//         .sublist(i + 1)
+//         .where((item) => item[0] == account[0])
+//         .toList());
+//     // print(megreSublists(temp));
+//     temp = temp.toSet().toList();
+//     temp = megreSublists(temp);
+//     output.add(temp);
+//     processesNames.add(account[0]);
+//     // print(temp);
+//     // break;
+//   }
+
+//   return output;
+// }
+
+// List megreSublists(List<dynamic> list) {
+//   List temp = [];
+//   for (List sameAccount in list) {
+//     temp.addAll(sameAccount.sublist(1));
+//     temp.sort();
+//     temp.insert(0, list[0][0]);
+//   }
+//   return temp.toSet().toList();
+// }
 
 //-------------
 main() {
-  List<List> duplicateAccountsList = [["John", "johnsmith@mail.com", "john00@mail.com"],
-["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
-["Mary", "mary@mail.com"]];
-  // merge(duplicateAccountsList);
-List<Account> accountsList =[];
-duplicateAccountsList.forEach((account)=>accountsList.add(Account(name: account[0],emailsList: account.sublist(1))));
-print(accountsList);
+  List<List> duplicateAccountsList = [
+    ["John", "johnsmith@mail.com", "john00@mail.com"],
+    ["John", "johnnybravo@mail.com"],
+    ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+    ["Mary", "mary@mail.com"]
+  ];
+  print(merge(duplicateAccountsList));
+// List<Account> accountsList =[];
+// duplicateAccountsList.forEach((account)=>accountsList.add(Account(name: account[0],emailsList: account.sublist(1))));
+// print(accountsList);
 }
-
 
 class Account {
   String name;
   List emailsList;
-  Account({this.name,this.emailsList});
+  Account({this.name, this.emailsList});
+
+  bool anyCommonEmailBetweenTwoAccounts(Account anotherAccount) =>
+      anotherAccount.emailsList.any((item) => this.emailsList.contains(item));
+
+  Account mergeBothAccounts(Account account1, Account account2) {
+    account1.emailsList.addAll(account2.emailsList);
+    account1.emailsList.toSet().toList();
+    account1.emailsList.sort();
+    return account1;
+  }
+}
+
+List<List> merge(List<List> listOfDuplicateAccounts) {
+  bool duplicatesFound = true;
+
+  //convert given list into list of objects
+   List<Account> listOfAccounts = [];
+    listOfAccounts = ListtoAccounts(listOfDuplicateAccounts);
+
+  while (duplicatesFound) { 
+    if(listOfAccounts.length==1){
+      break;
+    }
+    for (int i = 0; i < listOfAccounts.length; i++) {
+      Account singleAccount = listOfAccounts[0];
+      for (int j = 1; j < listOfAccounts.length; j++) {
+        if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
+          singleAccount = singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
+          listOfAccounts.removeAt(j);
+        } else {
+          duplicatesFound = false;
+        }
+      }
+    }
+  }
+
+  return AccountsToList(listOfAccounts);
+}
+
+// turn normal list of list of accounts into list of Account Objects
+ListtoAccounts(List<List> listOfAccounts) {
+  List<Account> accountsList = [];
+  listOfAccounts.forEach((account) => accountsList
+      .add(Account(name: account[0], emailsList: account.sublist(1))));
+  return accountsList;
+}
+
+// turn list of Account Objects into list of list of accounts
+AccountsToList(List<Account> accountsList) {
+  List<List> listOfAccounts;
+  accountsList.forEach((accountObject) =>
+      listOfAccounts.add([accountObject.name, accountObject.emailsList]));
+  return listOfAccounts;
 }
