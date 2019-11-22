@@ -20,6 +20,44 @@
 // ["Mary", "mary@mail.com"]]
 /// Output: [["John", 'john00@mail.com', 'john_newyork@mail.com', 'johnsmith@mail.com'],
 /// ["John", "johnnybravo@mail.com"], ["Mary", "mary@mail.com"]]
+List<List> merge(List<List> accountsList){
+  List<List> output=[];
+  List processesNames =[];
+  for(int i=0;i<accountsList.length;i++){
+    List<dynamic> temp=[];
+    dynamic account = accountsList[i];
+    // if(accountsList.sublist(i+1).contains(account[0]));
+    temp.add(account);
+    if(processesNames.contains(account[0])){
+      continue;
+    }
+    temp.addAll(accountsList.sublist(i+1).where((item)=>item[0]==account[0]).toList());
+    // print(megreSublists(temp));
+    temp = temp.toSet().toList();
+    temp = megreSublists(temp);
+    output.add(temp);
+    processesNames.add(account[0]);
+    // print(temp);
+    // break;
+  }
+  
+  return output;
+}
 
+List megreSublists(List<dynamic> list){
+  List temp=[];
+  for(List sameAccount in list){
+  temp.addAll(sameAccount.sublist(1));
+  temp.sort();
+  temp.insert(0, list[0][0]);
+  }
+  return temp.toSet().toList();
+}
+
+
+//-------------
 main() {
+  merge([["John", "johnsmith@mail.com", "john00@mail.com"],
+["John", "johnnybravo@mail.com"], ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+["Mary", "mary@mail.com"]]);
 }
