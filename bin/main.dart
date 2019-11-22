@@ -50,7 +50,7 @@ List<List> merge(List<List> listOfDuplicateAccounts) {
             singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
         listOfAccounts.removeAt(j);
         // print('j:$j j--:${j-1}');
-        j--;
+        j=i;
       }
     }
   }
