@@ -104,17 +104,15 @@ List<List> merge(List<List> listOfDuplicateAccounts) {
     if(listOfAccounts.length==1){
       break;
     }
-    for (int i = 0; i < listOfAccounts.length; i++) {
-      Account singleAccount = listOfAccounts[i];
-      for (int j = 1; j < listOfAccounts.length; j++) {
+    for (int i = 0; i < listOfAccounts.length; i++) {//need to fix this as well
+      Account singleAccount = listOfAccounts[0];
+      for (int j = i+1; j < listOfAccounts.length; j++) {
         if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
           singleAccount = singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
           listOfAccounts.removeAt(j);
-        } else {
-          //fix this
-          duplicatesFound = false;
-        }
+        } 
       }
+      duplicatesFound = false;
     }
   }
 
@@ -136,6 +134,7 @@ AccountsToList(List<Account> accountsList) {
     List temp = [];
     temp.add(accountObject.name);
     temp.addAll(accountObject.emailsList);
+    temp = temp.toSet().toList();
     listOfAccounts.add(temp);
   });
   return listOfAccounts;
