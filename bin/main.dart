@@ -30,35 +30,33 @@ class Account {
   bool anyCommonEmailBetweenTwoAccounts(Account anotherAccount) =>
       anotherAccount.emailsList.any((item) => this.emailsList.contains(item));
 
-  Account mergeBothAccounts(Account account1, Account account2) {
-    account1.emailsList.addAll(account2.emailsList);
-    account1.emailsList.toSet().toList();
-    account1.emailsList.sort();
-    return account1;
+  mergeAccountWith(Account account2) {
+    this.emailsList.addAll(account2.emailsList);
+    this.emailsList.toSet().toList();
+    this.emailsList.sort();
   }
 }
 
 List<List> merge(List<List> listOfDuplicateAccounts) {
   //convert given list into list of objects
   List<Account> listOfAccounts = [];
-  listOfAccounts = ListtoAccounts(listOfDuplicateAccounts);
+  listOfAccounts = listToAccounts(listOfDuplicateAccounts);
   for (int i = 0; i < listOfAccounts.length; i++) {
     Account singleAccount = listOfAccounts[i];
     for (int j = i + 1; j < listOfAccounts.length; j++) {
       if (singleAccount.anyCommonEmailBetweenTwoAccounts(listOfAccounts[j])) {
-        singleAccount =
-            singleAccount.mergeBothAccounts(singleAccount, listOfAccounts[j]);
+        singleAccount.mergeAccountWith(listOfAccounts[j]);
         listOfAccounts.removeAt(j);
         // print('j:$j j--:${j-1}');
-        j=i;
+        j = i;
       }
     }
   }
-  return AccountsToList(listOfAccounts);
+  return accountsToList(listOfAccounts);
 }
 
 // turn normal list of list of accounts into list of Account Objects
-ListtoAccounts(List<List> listOfAccounts) {
+listToAccounts(List<List> listOfAccounts) {
   List<Account> accountsList = [];
   listOfAccounts.forEach((account) => accountsList
       .add(Account(name: account[0], emailsList: account.sublist(1).toList())));
@@ -66,7 +64,7 @@ ListtoAccounts(List<List> listOfAccounts) {
 }
 
 // turn list of Account Objects into list of list of accounts
-AccountsToList(List<Account> accountsList) {
+accountsToList(List<Account> accountsList) {
   List<List> listOfAccounts = [];
   accountsList.forEach((accountObject) {
     List temp = [];
